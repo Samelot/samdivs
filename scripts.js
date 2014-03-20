@@ -50,14 +50,13 @@
     App.ctx.strokeStyle = "#ECD018";
     App.ctx.lineWidth = 5;
     App.ctx.lineCap = "round";
+
     App.socket = io.connect('http://localhost:4000');
     
     App.socket.on('connect', function(){
       App.socket.on('users_count', function(data){
         $(document.getElementById(data)).css('background-color', 'blue');
         currentSwitch.push(data);
-
-
       });
     });
 
@@ -69,10 +68,15 @@
         $(document.getElementById(data.x)).css('background-color', 'blue');
         var y = currentSwitch.pop();
         $(document.getElementById(y)).css('background-color', '');
+        var red = Math.floor(255 * Math.random());
+        var green = Math.floor(255 * Math.random());
+        var blue = Math.floor(255 * Math.random());
+        var rgb = "rgb("+red+","+green+","+blue+")";
+        console.log(rgb);
+        App.ctx.fillStyle = rgb;
+        App.ctx.fillRect(0,0,150,37.5);
 
         currentSwitch.push(data.x);
-    
-
     });
 
     // The next blocks of code allows the application to interact with jquery-event-drag implementation.
@@ -90,10 +94,13 @@
 
         currentSwitch.push(x);
 
-
-    
-
-  
+        var red = Math.floor(255 * Math.random());
+        var green = Math.floor(255 * Math.random());
+        var blue = Math.floor(255 * Math.random());
+        var rgb = "rgb("+red+","+green+","+blue+")";
+        console.log(rgb);
+        App.ctx.fillStyle = rgb;
+        App.ctx.fillRect(0,0,150,37.5);
     };
   };
   /*
