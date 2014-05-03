@@ -1,14 +1,100 @@
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}body{line-height:1;}ol,ul{list-style:none;}blockquote,q{quotes:none;}blockquote:before,blockquote:after,q:before,q:after{content:none;}table{border-collapse:collapse;border-spacing:0;}.clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0;}.clearfix{display:inline-block;}html[xmlns] .clearfix{display:block;}* html .clearfix{height:1%;}
-
-
-
-body {
-	background: #392C44;
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    border:0;
+    font-size:100%;
+    font:inherit;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
 }
-	
-	
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display:block;
+}
+body {
+    line-height:1;
+}
+.wrapper {
+    width:600px;
+    margin-top:10px;
+    padding:13px 0px 13px 0px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    border:1px solid black;
+}
+.clausStyle {
+/*    margin-left: auto;
+    margin-right: auto;*/
+    line-height:35px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    /*-webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;*/
+}
+.clausStyle:hover {
+    margin-left:-8px;
+    border-left:8px ridge rgba(223, 211, 225, .5);
+    -webkit-border-radius: 3px, -moz-border-radius: 3px, border-radius: 3px, cursor: pointer;
+    cursor: hand;
+}
+article {
+    width:500px;  
+    border:1px solid red;
+    margin-left: auto;
+    margin-right: auto;  
+}
+
+article * {
+    float:left;
+}
+/* FATDADDY GLITCHOUT */
+
+/*
+.clausStyle:hover {
+    line-height:10px;
+}*/
+ ol, ul {
+    list-style:none;
+}
+blockquote, q {
+    quotes:none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+    content:none;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+.clearfix:after {
+    content:".";
+    display:block;
+    clear:both;
+    visibility:hidden;
+    line-height:0;
+    height:0;
+}
+.clearfix {
+    display:inline-block;
+}
+html[xmlns] .clearfix {
+    display:block;
+}
+* html .clearfix {
+    height:1%;
+}
+body {
+    background:;
+}
 canvas {
-	background: #fff;
-	margin: 20px auto;
-	border: 5px solid #E8E8E8;
-	display: block;}
+    background: #fff;
+    margin: 20px auto;
+    border: 2px solid #E8E8E8;
+    display: block;
+}

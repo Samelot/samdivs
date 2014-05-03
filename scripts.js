@@ -28,11 +28,11 @@
 
     // Similar to the above, except uses forEach. Tasty. Which one is better? 
     // Ask on stackexchange. Find ways to test. What (code) Tcomes later might factor in!!
-    
-    var cars = 'Saab,Volvo,BMW,GMC,Nissan,Ford'.split(',');
+
+    var cars = 'Claus,Claus,Claus,Claus,Claus,Claus'.split(',');
     for (var c in cars) {
       bob = document.createElement('div');
-      bob.id = cars[c]; bob.className = "car";
+      bob.id = "claus" + c; bob.className = "clausStyle";
       bob.innerHTML = cars[c];
       App.docfrag.appendChild(bob);
       //document.body.appendChild(newElement);
@@ -40,7 +40,7 @@
     
 
     App.canvas.height = 400;
-    App.canvas.width = 800;
+    App.canvas.width = 480;
     // Creates canvas inside article tag/element.
     document.getElementsByTagName('article')[0].appendChild(App.canvas);
     document.getElementsByTagName('article')[0].appendChild(App.docfrag);
@@ -55,7 +55,13 @@
     
     App.socket.on('connect', function(){
       App.socket.on('users_count', function(data){
-        $(document.getElementById(data)).css('background-color', 'blue');
+        $(document.getElementById(data)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '3px',
+            '-moz-border-radius': '3px',
+            'border-radius': '3px', 
+            'background': 'linear-gradient(to bottom, rgba(255,255,255,1) 11%,rgba(260,167,200,.1) 100%)'});
+
         currentSwitch.push(data);
       });
     });
@@ -64,8 +70,9 @@
     // Without this listener responding from our server, the only drawing would be done by the client.
 
     App.socket.on('draw', function(data) {
-        console.log(data);
-        $(document.getElementById(data.x)).css('background-color', 'blue');
+        alert(data);
+        // somehow seeps through to client??
+        $(document.getElementById(data.x)).css('background-color', 'red');
         var y = currentSwitch.pop();
         $(document.getElementById(y)).css('background-color', '');
         var red = Math.floor(255 * Math.random());
@@ -88,11 +95,35 @@
     
     // remember, this function's x argument is not directly related to the below function's x argument!!
     App.draw = function(x) {
-        $(document.getElementById(x)).css('background-color', 'blue');
-        var y = currentSwitch.pop();
-        $(document.getElementById(y)).css('background-color', '');
 
-        currentSwitch.push(x);
+        $(document.getElementById(x)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '3px',
+            '-moz-border-radius': '3px',
+            'border-radius': '3px', 
+            'background': 'linear-gradient(to bottom, rgba(255,255,255,1) 11%,rgba(260,167,200,.1) 100%)'});
+
+    // background-color: rgba(216, 236, 251, .5);
+
+        var y = currentSwitch.pop();
+
+        if(y === x) {
+            $(document.getElementById(y)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '',
+            '-moz-border-radius': '',
+            'border-radius': '', 
+            'background': ''});
+        } else {
+            $(document.getElementById(y)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '',
+            '-moz-border-radius': '',
+            'border-radius': '', 
+            'background': ''});
+            currentSwitch.push(x);  
+        }
+        // alert("currentSwitch: " + currentSwitch);
 
         var red = Math.floor(255 * Math.random());
         var green = Math.floor(255 * Math.random());
@@ -106,7 +137,8 @@
   /*
     Draw Events
   */
-  $('div').live('click', function(e) {
+$(document).ready(function(){ // this is the fucking cunt that made it WORK!!!!
+  $('article').on('click', 'div', function(e) {
     //console.log(e.currentTarget.id);
     var x = e.currentTarget.id;
     var z = currentSwitch;
@@ -127,6 +159,7 @@
       z: z
     });
   });
+});
 
   // anonymous function that calls init upon startup. Only called once. (?)
   $(function() {

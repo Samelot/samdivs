@@ -1,11 +1,19 @@
 (function() {
   var App;
   App = {};
+
+  var currentSwitch = [];
   /*
-  	Init 
+    Init 
   */
   App.init = function() {
+    //var b = 2;
+
+    // App. isn't the factor in client/server consistency.
     App.canvas = document.createElement('canvas');
+    //var hii = document.createElement('div');
+    //hii.textContent = "supsup";
+    
     App.docfrag = document.createDocumentFragment();
 
     /*
@@ -21,34 +29,62 @@
     // Similar to the above, except uses forEach. Tasty. Which one is better? 
     // Ask on stackexchange. Find ways to test. What (code) Tcomes later might factor in!!
 
-    var cars = 'Saab,Volvo,BMW,GMC,Nissan,Ford'.split(',');
+    var cars = 'Claus,Claus,Claus,Claus,Claus,Claus'.split(',');
     for (var c in cars) {
       bob = document.createElement('div');
-      bob.id = cars[c]; bob.className = "car";
+      bob.id = "claus" + c; bob.className = "clausStyle";
       bob.innerHTML = cars[c];
       App.docfrag.appendChild(bob);
       //document.body.appendChild(newElement);
     }
+    
 
     App.canvas.height = 400;
-    App.canvas.width = 800;
+    App.canvas.width = 520;
     // Creates canvas inside article tag/element.
     document.getElementsByTagName('article')[0].appendChild(App.canvas);
     document.getElementsByTagName('article')[0].appendChild(App.docfrag);
+    //document.getElementsByTagName('article')[0].appendChild(App.docfrag);
     App.ctx = App.canvas.getContext("2d");
     App.ctx.fillStyle = "solid";
     App.ctx.strokeStyle = "#ECD018";
     App.ctx.lineWidth = 5;
     App.ctx.lineCap = "round";
+
     App.socket = io.connect('http://localhost:4000');
+    
+    App.socket.on('connect', function(){
+      App.socket.on('users_count', function(data){
+        $(document.getElementById(data)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '3px',
+            '-moz-border-radius': '3px',
+            'border-radius': '3px', 
+            'background': 'linear-gradient(to bottom, rgba(224,243,250,1) 0%,rgba(216,240,252,1) 50%,rgba(184,226,246,1) 51%,rgba(182,223,253,1) 100%)',
+            'filter': "progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f3fa', endColorstr='#b6dffd',GradientType=0 )"});
+
+        currentSwitch.push(data);
+      });
+    });
+
     // Recieves, retrieves drawing done by another client. 
     // Without this listener responding from our server, the only drawing would be done by the client.
-    App.socket.on('draw', function(data) {
-      // When recieved, this data triggers to App.draw.
-      // Send/apply server drawings (other clients beside user) to canvas
 
-      // What handles client/server interaction so that user drawing doesn't recieve repeat of what he drew, if such repetitions are possible?
-      return App.draw(data.x); // left out ", data.param1, data.param2"
+    App.socket.on('draw', function(data) {
+        alert(data);
+        // somehow seeps through to client??
+        $(document.getElementById(data.x)).css('background-color', 'red');
+        var y = currentSwitch.pop();
+        $(document.getElementById(y)).css('background-color', '');
+        var red = Math.floor(255 * Math.random());
+        var green = Math.floor(255 * Math.random());
+        var blue = Math.floor(255 * Math.random());
+        var rgb = "rgb("+red+","+green+","+blue+")";
+        console.log(rgb);
+        App.ctx.fillStyle = rgb;
+        App.ctx.fillRect(0,0,150,37.5);
+
+        currentSwitch.push(data.x);
     });
 
     // The next blocks of code allows the application to interact with jquery-event-drag implementation.
@@ -58,28 +94,75 @@
     // Rewrite comments in CanvasDraw-Sam!! Stuff below calls actions to Canvas element, not necessarily to jquery.event.drag !!! 
     // Important to know. If that's the case, how to jquery.event.drag and the canvas element interact with each other ???
     
+    // remember, this function's x argument is not directly related to the below function's x argument!!
     App.draw = function(x) {
-      if (x) {
-        $(App.docfrag).css('background-color', 'blue');
-        $(App.canvas).css('background-color', 'blue');
-      } 
+
+        $(document.getElementById(x)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '3px',
+            '-moz-border-radius': '3px',
+            'border-radius': '3px', 
+            'background': 'linear-gradient(to bottom, rgba(255,255,255,1) 11%,rgba(260,167,200,.1) 100%)'});
+
+    // background-color: rgba(216, 236, 251, .5);
+
+        var y = currentSwitch.pop();
+
+        if(y === x) {
+            $(document.getElementById(y)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '',
+            '-moz-border-radius': '',
+            'border-radius': '', 
+            'background': '',
+            'filter': ''});
+        } else {
+            $(document.getElementById(y)).css({
+            'margin-left': '',
+            '-webkit-border-radius': '',
+            '-moz-border-radius': '',
+            'border-radius': '', 
+            'background': '',
+            'filter': ''});
+            currentSwitch.push(x);  
+        }
+        // alert("currentSwitch: " + currentSwitch);
+
+        var red = Math.floor(255 * Math.random());
+        var green = Math.floor(255 * Math.random());
+        var blue = Math.floor(255 * Math.random());
+        var rgb = "rgb("+red+","+green+","+blue+")";
+        console.log(rgb);
+        App.ctx.fillStyle = rgb;
+        App.ctx.fillRect(0,0,150,37.5);
     };
   };
   /*
-  	Draw Events
+    Draw Events
   */
-  $('div').live('click', function(e) {
-    //$(e.target).css('background-color', 'blue');
-    console.log(e);
-    console.log(x);
-    var x;
+$(document).ready(function(){ // this is the fucking cunt that made it WORK!!!!
+  $('article').on('click', 'div', function(e) {
+    //console.log(e.currentTarget.id);
+    var x = e.currentTarget.id;
+    var z = currentSwitch;
+
+    //console.log(y);
+    // Later on.. Make an object with an array of colors. input these as a parameter to currentSwitch.
+    // Not another index, but a parameter that exists with in the same index as x (currentSwitch[0])
+    //var z = currentSwitch;
+    //console.log(currentSwitch);
+
+    // Check ordering of x and y. Notice App.draw, above... if (x) might cause issues ?
+    // Can the function be triggered before y arrives, thus becoming trunked off ?
     // Send/apply client drawing to canvas
-    App.draw(e);
+    App.draw(x);
     // Send/apply client drawing to server's canvas
     App.socket.emit('drawClick', { // drawClick will appear as "data" in the reception of this function, as seen in server.js
       x: x,
+      z: z
     });
   });
+});
 
   // anonymous function that calls init upon startup. Only called once. (?)
   $(function() {
